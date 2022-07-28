@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "deploy": "netlify deploy --dir=./dist -p -m 'git log -1 --pretty=%B'",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
