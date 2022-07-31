@@ -1,7 +1,18 @@
-import sveltePreprocess from 'svelte-preprocess'
+import preprocess from 'svelte-preprocess';
+import adapter from '@sveltejs/adapter-netlify';
 
-export default {
-  // Consult https://github.com/sveltejs/svelte-preprocess
-  // for more information about preprocessors
-  preprocess: sveltePreprocess()
-}
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+	// Consult https://github.com/sveltejs/svelte-preprocess
+	// for more information about preprocessors
+	preprocess: preprocess(),
+
+	kit: {
+		adapter: adapter({
+			edge: false,
+			split: true
+		})
+	}
+};
+
+export default config;
