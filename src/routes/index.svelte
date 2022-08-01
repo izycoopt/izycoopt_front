@@ -1,7 +1,9 @@
 <script>
-	import { todos } from '../stores/todoStore';
+	// @ts-nocheck
+	import { loadTodos, todos } from '../stores/todoStore';
 	import Todo from '../components/Todo.svelte';
 	import TodoForm from '../components/TodoForm.svelte';
+	loadTodos();
 </script>
 
 <main>

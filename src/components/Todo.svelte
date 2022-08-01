@@ -1,6 +1,6 @@
 <script>
+	// @ts-nocheck
 	import { deleteTodo, toggleTodoCompleted } from '../stores/todoStore';
-	// @ts-ignore
 	export let todo;
 	deleteTodo;
 </script>
@@ -9,22 +9,14 @@
 	<input
 		class="mr-2 form-checkbox h-5 w-5"
 		name=""
-		checked={// @ts-ignore
-		todo.completed}
+		checked={todo.completed}
 		on:change={() => {
 			// @ts-ignore
-			toggleTodoCompleted(todo.id);
+			toggleTodoCompleted(todo.id, todo.completed);
 		}}
 		type="checkbox"
 	/>
-	<span
-		class={`flex-1 text-gray-800 ${
-			// @ts-ignore
-			todo.completed ? 'line-through' : ''
-		}`}
-	>
-		{todo.text}</span
-	>
+	<span class={`flex-1 text-gray-800 ${todo.completed ? 'line-through' : ''}`}> {todo.text}</span>
 	<button
 		class="text-sm bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded 
     focus:outline-none focus:shadow-outline"

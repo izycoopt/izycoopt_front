@@ -1,35 +1,48 @@
+// @ts-nocheck
 import { writable } from 'svelte/store';
+import { supabase } from '../supabase.js';
 
 export const todos = writable([]);
+export const name = writable('Svelte');
 
-// @ts-ignore
-export const addTodo = (text) => {
-	if (text) {
-		// @ts-ignore
-		todos.update((cur) => {
-			const newTodos = [...cur, { text, completed: false, id: Date.now() }];
-			return newTodos;
-		});
+export const loadTodos = async () => {
+	const { data, error } = await supabase.from('todos').select();
+	if (error) {
+		return console.error(error);
 	}
+	todos.set(data);
 };
-// @ts-ignore
-export const deleteTodo = (id) => {
-	// @ts-ignore
+
+export const addTodo = async (text) => {
+	const { data, error } = await supabase.from('todos').insert([{ text, completed: false }]);
+	if (error) {
+		return console.error(error);
+	}
+	todos.update((cur) => [...cur, data[0]]);
+};
+
+export const deleteTodo = async (id) => {
+	const { error } = await supabase.from('todos').delete().match({ id });
+	if (error) {
+		return console.error(error);
+	}
 	todos.update((todos) => todos.filter((todo) => todo.id !== id));
 };
-// @ts-ignore
-export const toggleTodoCompleted = (id) => {
+
+export const toggleTodoCompleted = async (id, currentState) => {
+	const { error } = await supabase.from('todos').update({ completed: !currentState }).match({ id });
+	if (error) {
+		return console.error(error);
+	}
 	todos.update((todos) => {
 		let index = -1;
 		for (let i = 0; i < todos.length; i++) {
-			// @ts-ignore
 			if (todos[i].id === id) {
 				index = i;
 				break;
 			}
 		}
 		if (index !== -1) {
-			// @ts-ignore
 			todos[index].completed = !todos[index].completed;
 		}
 		return todos;
